@@ -14,7 +14,7 @@ int main(){
     cout << "ptr'nin işaret ettiği değer: " << *ptr << endl;
     
     // Belirli bir adresi okuma (TEHLİKELİ!):
-    int* specificPtr = (int*)0x00ff00;  // Type casting ile adres atama
+    int* specificPtr = (int*)0x61ff04;  // Type casting ile adres atama
     cout << "0x61ff08 adresindeki değer: " << *specificPtr << endl;
 
 
