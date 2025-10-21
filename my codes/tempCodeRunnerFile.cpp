@@ -1,1 +1,1 @@
-lo
+temp->next = nullptr;
