@@ -1,0 +1,139 @@
+PROCEDURE insertPosition(item, position):
+  // 1. Yeni bir düğüm oluştur ve veriyi ata.
+  CREATE newNode with data = item
+
+  // 2. Geçersiz pozisyonları kontrol et.
+  IF position <= 0 THEN
+    PRINT "Geçersiz pozisyon."
+    // Oluşturulan düğümü hafızadan silmek iyi bir pratiktir.
+    DELETE newNode
+    RETURN
+  END IF
+
+  // 3. Listenin başına ekleme durumu.
+  IF position == 1 THEN
+    SET newNode.next = head
+    SET head = newNode
+    RETURN
+  END IF
+
+  // 4. Eklenecek doğru pozisyonu bul.
+  // temp işaretçisini listenin başına ayarla.
+  SET temp = head
+  // Mevcut indeksi takip etmek için bir sayaç başlat.
+  SET currentIndex = 1
+
+  // Eklenecek pozisyonun bir önceki düğümüne kadar listeyi dolaş.
+  WHILE temp IS NOT NULL AND currentIndex < position - 1:
+    SET temp = temp.next
+    INCREMENT currentIndex
+  END WHILE
+
+  // 5. Pozisyonun listenin boyutunu aşıp aşmadığını kontrol et.
+  IF temp IS NULL THEN
+    PRINT "Pozisyon listenin boyutunu aşıyor."
+    DELETE newNode
+    RETURN
+  END IF
+
+  // 6. Düğümü araya ekle.
+  SET newNode.next = temp.next
+  SET temp.next = newNode
+END PROCEDURE
+
+
+
+
+
+
+
+
+
+PROCEDURE deleteItem(position):
+  // 1. Listenin boş olup olmadığını kontrol et.
+  IF head IS NULL THEN
+    PRINT "Liste boş, silinecek bir şey yok."
+    RETURN
+  END IF
+
+  // 2. Geçici bir işaretçi (temp) oluştur ve listenin başına ayarla.
+  SET temp = head
+
+  // 3. Geçersiz pozisyonları kontrol et.
+  IF position <= 0 THEN
+    PRINT "Geçersiz pozisyon."
+    RETURN
+  END IF
+
+  // 4. Listenin başındaki elemanı silme durumu.
+  IF position == 1 THEN
+    // 'head'i bir sonraki düğüme kaydır.
+    SET head = temp.next
+    // Eski baş düğümü hafızadan sil.
+    DELETE temp
+    RETURN
+  END IF
+
+  // 5. Silinecek doğru pozisyonu bul.
+  // Önceki düğümü takip etmek için bir işaretçi (prev) oluştur.
+  SET prev = NULL
+  // Mevcut indeksi takip etmek için bir sayaç başlat.
+  SET currentIndex = 1
+
+  // Silinecek düğüme kadar listeyi dolaş.
+  WHILE temp IS NOT NULL AND currentIndex < position:
+    SET prev = temp
+    SET temp = temp.next
+    INCREMENT currentIndex
+  END WHILE
+
+  // 6. Pozisyonun listenin boyutunu aşıp aşmadığını kontrol et.
+  IF temp IS NULL THEN
+    PRINT "Pozisyon listenin boyutunu aşıyor."
+    RETURN
+  END IF
+
+  // 7. Düğümü listeden çıkar ve sil.
+  // Önceki düğümün 'next'ini, silinecek düğümün 'next'ine bağla.
+  SET prev.next = temp.next
+  // Silinecek düğümü hafızadan sil.
+  DELETE temp
+END PROCEDURE
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION find(item):
+  // 1. Aramaya listenin başından başla.
+  // Geçici bir işaretçi (temp) oluştur ve listenin başına ayarla.
+  SET temp = head
+  // Pozisyonu takip etmek için bir sayaç başlat.
+  SET position = 1
+
+  // 2. Listenin sonuna kadar her bir düğümü kontrol et.
+  WHILE temp IS NOT NULL:
+    // 3. Aranan eleman mevcut düğümde mi diye kontrol et.
+    IF temp.data == item THEN
+      // Eleman bulundu, mevcut pozisyonu döndür.
+      RETURN position
+    END IF
+
+    // 4. Bir sonraki düğüme geç.
+    SET temp = temp.next
+    // Pozisyon sayacını artır.
+    INCREMENT position
+  END WHILE
+
+  // 5. Eleman listede bulunamadıysa, özel bir değer döndür.
+  // Döngü bitti ve eleman bulunamadı.
+  RETURN -1
+END FUNCTION
+
